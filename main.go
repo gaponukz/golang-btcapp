@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"./src/controller"
@@ -22,6 +23,13 @@ func RequiredMethod(router RouterFunc, required string) RouterFunc {
 	}
 }
 
+func LoggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(responseWriter http.ResponseWriter, request *http.Request) {
+		log.Printf("%s %s?%s", request.Method, request.URL.Path, request.URL.RawQuery)
+		next.ServeHTTP(responseWriter, request)
+	})
+}
+
 func main() {
 	routerService := controller.Controller{
 		Storage:  &storage.UserMemoryStorage{},
@@ -37,9 +45,11 @@ func main() {
 	httpRoute.HandleFunc("/subscribe", RequiredMethod(routerService.SubscribeRouter, http.MethodPost))
 	httpRoute.HandleFunc("/sendEmails", RequiredMethod(routerService.SendEmailsRouter, http.MethodPost))
 
+	loggedRouter := LoggingMiddleware(httpRoute)
+
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: httpRoute,
+		Handler: loggedRouter,
 	}
 
 	server.ListenAndServe()

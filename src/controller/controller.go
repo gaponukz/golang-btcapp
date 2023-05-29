@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"io"
 	"net/http"
 	"strconv"
 
@@ -23,28 +22,36 @@ func (controller Controller) RateRouter(responseWriter http.ResponseWriter, requ
 	if err == nil {
 		stringPrice := strconv.FormatFloat(btcPrice, 'f', -1, 64)
 		responseWriter.Write([]byte(stringPrice))
-
-	} else {
-		responseWriter.WriteHeader(http.StatusInternalServerError)
-		responseWriter.Write([]byte(""))
+		return
 	}
+
+	responseWriter.WriteHeader(http.StatusInternalServerError)
+	responseWriter.Write([]byte(""))
 }
 
 func (controller Controller) SubscribeRouter(responseWriter http.ResponseWriter, request *http.Request) {
+	userGmail := request.URL.Query().Get("gmail")
+
+	if userGmail == "" {
+		responseWriter.WriteHeader(http.StatusBadRequest)
+		responseWriter.Write([]byte(""))
+		return
+	}
+
 	user := entities.User{
-		Gmail:           request.URL.Query().Get("gmail"),
+		Gmail:           userGmail,
 		HasSubscription: true,
 	}
 
 	err := controller.Storage.Create(user)
 
-	if err == nil {
-		responseWriter.Write([]byte("Added"))
-
-	} else {
+	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
 		responseWriter.Write([]byte(""))
+		return
 	}
+
+	responseWriter.Write([]byte("Added"))
 }
 
 func (controller Controller) SendEmailsRouter(responseWriter http.ResponseWriter, request *http.Request) {
@@ -53,23 +60,11 @@ func (controller Controller) SendEmailsRouter(responseWriter http.ResponseWriter
 		controller.Storage,
 	)
 
-	if err == nil {
-		responseWriter.Write([]byte("Sended"))
-
-	} else {
+	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
 		responseWriter.Write([]byte(""))
-	}
-}
-
-func getUserFromRequestBody(request *http.Request) (entities.User, error) {
-	defer request.Body.Close()
-
-	body, err := io.ReadAll(request.Body)
-
-	if err != nil {
-		return entities.User{}, err
+		return
 	}
 
-	return entities.UserFromJSON(string(body)), nil
+	responseWriter.Write([]byte("Sended"))
 }
