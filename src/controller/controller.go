@@ -55,16 +55,10 @@ func (controller Controller) SubscribeRouter(responseWriter http.ResponseWriter,
 }
 
 func (controller Controller) SendEmailsRouter(responseWriter http.ResponseWriter, request *http.Request) {
-	err := controller.Observer.Notify(
+	go controller.Observer.Notify(
 		controller.Exporter,
 		controller.Storage,
 	)
-
-	if err != nil {
-		responseWriter.WriteHeader(http.StatusInternalServerError)
-		responseWriter.Write([]byte(""))
-		return
-	}
 
 	responseWriter.Write([]byte("Sended"))
 }
