@@ -11,7 +11,7 @@ import (
 
 func main() {
 	routerService := controller.Controller{
-		Exporter: &exporter.MemoryExporter{},
+		Exporter: &exporter.CoingeckoExporter{},
 		Storage: &storage.JsonFileUserStorage{
 			Filename: "users.json",
 		},
