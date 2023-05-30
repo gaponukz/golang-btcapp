@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"strconv"
 
-	"../entities"
-	exporterService "../exporter"
-	observerService "../observer"
-	storageService "../storage"
+	"btcapp/src/entities"
+
+	exporterService "btcapp/src/exporter"
+	observerService "btcapp/src/observer"
+	storageService "btcapp/src/storage"
 )
 
 type Controller struct {

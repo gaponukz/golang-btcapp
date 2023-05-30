@@ -3,7 +3,7 @@ package storage
 import (
 	"errors"
 
-	"../entities"
+	"btcapp/src/entities"
 )
 
 type IStorage[Entity any] interface {
@@ -16,19 +16,19 @@ type UserMemoryStorage struct {
 	Users []entities.User
 }
 
-func (this UserMemoryStorage) GetAll() ([]entities.User, error) {
-	return this.Users, nil
+func (strg UserMemoryStorage) GetAll() ([]entities.User, error) {
+	return strg.Users, nil
 }
 
-func (this *UserMemoryStorage) Create(user entities.User) error {
-	this.Users = append(this.Users, user)
+func (strg *UserMemoryStorage) Create(user entities.User) error {
+	strg.Users = append(strg.Users, user)
 	return nil
 }
 
-func (this *UserMemoryStorage) Delete(userToRemove entities.User) error {
+func (strg *UserMemoryStorage) Delete(userToRemove entities.User) error {
 	index := -1
 
-	for idx, user := range this.Users {
+	for idx, user := range strg.Users {
 		if user.Gmail == userToRemove.Gmail {
 			index = idx
 			break
@@ -36,10 +36,10 @@ func (this *UserMemoryStorage) Delete(userToRemove entities.User) error {
 	}
 
 	if index == -1 {
-		return errors.New("User not found")
+		return errors.New("user not found")
 	}
 
-	this.Users = append(this.Users[:index], this.Users[index+1])
+	strg.Users = append(strg.Users[:index], strg.Users[index+1])
 
 	return nil
 }

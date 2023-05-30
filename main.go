@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"./src/controller"
-	"./src/exporter"
-	"./src/observer"
-	"./src/storage"
+	"btcapp/src/controller"
+	"btcapp/src/exporter"
+	"btcapp/src/observer"
+	"btcapp/src/storage"
 )
 
 type RouterFunc = func(rw http.ResponseWriter, r *http.Request)
@@ -32,8 +32,10 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 
 func main() {
 	routerService := controller.Controller{
-		Storage:  &storage.UserMemoryStorage{},
 		Exporter: &exporter.MemoryExporter{},
+		Storage: &storage.JsonFileUserStorage{
+			Filename: "users.json",
+		},
 		Observer: &observer.ObserverService{
 			Strategy: observer.ConsoleLogStrategy,
 		},

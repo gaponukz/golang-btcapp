@@ -1,9 +1,9 @@
 package observer
 
 import (
-	"../entities"
-	exporterService "../exporter"
-	storageService "../storage"
+	"btcapp/src/entities"
+	exporterService "btcapp/src/exporter"
+	storageService "btcapp/src/storage"
 )
 
 type IObserverService interface {
