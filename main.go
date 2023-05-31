@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"btcapp/src/controller"
@@ -33,5 +34,6 @@ func main() {
 		Handler: loggedRouter,
 	}
 
+	fmt.Println("⚡️[server]: Server is running at http://localhost:8080")
 	server.ListenAndServe()
 }

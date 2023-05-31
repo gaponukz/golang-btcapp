@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -56,10 +57,10 @@ func (controller Controller) SubscribeRouter(responseWriter http.ResponseWriter,
 }
 
 func (controller Controller) SendEmailsRouter(responseWriter http.ResponseWriter, request *http.Request) {
-	go controller.Observer.Notify(
+	errorsCount, usersCount := controller.Observer.Notify(
 		controller.Exporter,
 		controller.Storage,
 	)
 
-	responseWriter.Write([]byte("Sended"))
+	responseWriter.Write([]byte(fmt.Sprintf("Sended %d/%d", errorsCount, usersCount)))
 }
