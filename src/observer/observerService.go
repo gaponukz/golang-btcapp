@@ -40,7 +40,7 @@ func (obs *ObserverService) Notify(
 		if user.HasSubscription {
 			wg.Add(1)
 			go func(userGmail string) {
-				defer wg.Done()
+				defer wg.Add(-1)
 				obs.Strategy(userGmail, btcPrice, errorscCannel)
 			}(user.Gmail)
 		}

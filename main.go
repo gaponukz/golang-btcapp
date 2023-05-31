@@ -7,6 +7,7 @@ import (
 	"btcapp/src/controller"
 	"btcapp/src/exporter"
 	"btcapp/src/observer"
+	"btcapp/src/settings"
 	"btcapp/src/storage"
 )
 
@@ -17,7 +18,13 @@ func main() {
 			Filename: "users.json",
 		},
 		Observer: &observer.ObserverService{
-			Strategy: observer.ConsoleLogStrategy,
+			Strategy: func(userGmail string, BTCPrice float64, errors chan error) {
+				settingsExporter := settings.DotEnvSettings{}
+
+				observer.SendGmailLetterStrategy(
+					userGmail, BTCPrice, errors, settingsExporter.Load(),
+				)
+			},
 		},
 	}
 
