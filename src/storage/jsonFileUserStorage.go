@@ -4,7 +4,7 @@ import (
 	"btcapp/src/entities"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -21,7 +21,7 @@ func (strg *JsonFileUserStorage) GetAll() ([]entities.User, error) {
 	defer jsonFile.Close()
 
 	users := []entities.User{}
-	byteValue, _ := ioutil.ReadAll(jsonFile)
+	byteValue, _ := io.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &users)
 
 	return users, nil
@@ -42,14 +42,22 @@ func (strg *JsonFileUserStorage) Create(user entities.User) error {
 
 func (strg *JsonFileUserStorage) writeUsers(users []entities.User) error {
 	usersJSON, err := json.MarshalIndent(users, "", " ")
-
 	if err != nil {
 		return err
 	}
 
-	err = ioutil.WriteFile(strg.Filename, usersJSON, 0644)
+	file, err := os.Create(strg.Filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
 
-	return err
+	_, err = file.Write(usersJSON)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (strg *JsonFileUserStorage) Delete(userToRemove entities.User) error {
