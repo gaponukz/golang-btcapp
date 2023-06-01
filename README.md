@@ -12,7 +12,7 @@ Golang version of [gaponukz/GSES2-BTC-application](https://github.com/gaponukz/G
 ![image](https://github.com/gaponukz/GSES2-BTC-application/assets/49754258/474fd9cd-2d01-4642-aa65-18cb55323e9d)
 
 ## Settings
-Before usge you need to create `.env` file:
+Before usage you need to create `.env` file:
 ```env
 gmail=user@gmail.com
 gmailPassword=userpassowrf123
@@ -26,4 +26,10 @@ cd golang-btcapp
 go mod download
 go build
 ./btcapp
+```
+
+### From docker
+```bash
+docker pull gaponukz/gobtcapp
+docker run -d -p 8080:8080 --rm --env-file .env gaponukz/gobtcapp 
 ```
