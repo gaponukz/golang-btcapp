@@ -10,3 +10,20 @@ Golang version of [gaponukz/GSES2-BTC-application](https://github.com/gaponukz/G
 
 ## Some logic explanation
 ![image](https://github.com/gaponukz/GSES2-BTC-application/assets/49754258/474fd9cd-2d01-4642-aa65-18cb55323e9d)
+
+## Settings
+Before usge you need to create `.env` file:
+```env
+gmail=user@gmail.com
+gmailPassword=userpassowrf123
+```
+
+## Deploying
+### From git (locally)
+```bash
+git clone https://github.com/gaponukz/golang-btcapp.git
+cd golang-btcapp
+go mod download
+go build
+./btcapp
+```
