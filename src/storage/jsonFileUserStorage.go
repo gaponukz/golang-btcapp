@@ -3,7 +3,6 @@ package storage
 import (
 	"btcapp/src/entities"
 	"encoding/json"
-	"errors"
 	"io"
 	"os"
 )
@@ -58,29 +57,4 @@ func (strg *JsonFileUserStorage) writeUsers(users []entities.User) error {
 	}
 
 	return nil
-}
-
-func (strg *JsonFileUserStorage) Delete(userToRemove entities.User) error {
-	users, err := strg.GetAll()
-	index := -1
-
-	if err != nil {
-		return err
-	}
-
-	for idx, user := range users {
-		if user.Gmail == userToRemove.Gmail {
-			index = idx
-			break
-		}
-	}
-
-	if index == -1 {
-		return errors.New("user not found")
-	}
-
-	users = append(users[:index], users[index+1:]...)
-	err = strg.writeUsers(users)
-
-	return err
 }

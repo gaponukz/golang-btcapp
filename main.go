@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"btcapp/src/controller"
+	. "btcapp/src/controller"
 	"btcapp/src/exporter"
 	"btcapp/src/observer"
 	"btcapp/src/settings"
@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	routerService := controller.Controller{
+	routerService := Controller{
 		Exporter: &exporter.CoingeckoExporter{},
 		Storage: &storage.JsonFileUserStorage{
 			Filename: "users.json",

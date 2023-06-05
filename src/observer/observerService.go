@@ -3,14 +3,17 @@ package observer
 import (
 	"btcapp/src/entities"
 	exporterService "btcapp/src/exporter"
-	storageService "btcapp/src/storage"
 	"sync"
 )
+
+type GetAllAbleStorage interface {
+	GetAll() ([]entities.User, error)
+}
 
 type IObserverService interface {
 	Notify(
 		exporter exporterService.IRateExporter,
-		storage storageService.IStorage[entities.User],
+		storage GetAllAbleStorage,
 	) (int, int)
 }
 
@@ -20,7 +23,7 @@ type ObserverService struct {
 
 func (obs *ObserverService) Notify(
 	exporter exporterService.IRateExporter,
-	storage storageService.IStorage[entities.User],
+	storage GetAllAbleStorage,
 ) (int, int) {
 	users, err := storage.GetAll()
 	if err != nil {

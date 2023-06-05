@@ -1,7 +1,8 @@
 package storage
 
-type IStorage[Entity any] interface {
-	GetAll() ([]Entity, error)
-	Create(Entity) error
-	Delete(Entity) error
+import "btcapp/src/entities"
+
+type IUserStorage interface {
+	GetAll() ([]entities.User, error)
+	Create(entities.User) error
 }

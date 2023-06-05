@@ -1,13 +1,13 @@
-package main
+package controller
 
 import (
 	"log"
 	"net/http"
 )
 
-type RouterFunc = func(rw http.ResponseWriter, r *http.Request)
+type routerFunc = func(rw http.ResponseWriter, r *http.Request)
 
-func RequiredMethod(router RouterFunc, required string) RouterFunc {
+func RequiredMethod(router routerFunc, required string) routerFunc {
 	return func(responseWriter http.ResponseWriter, request *http.Request) {
 		if request.Method == required {
 			router(responseWriter, request)

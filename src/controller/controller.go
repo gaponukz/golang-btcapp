@@ -13,7 +13,7 @@ import (
 )
 
 type Controller struct {
-	Storage  storageService.IStorage[entities.User]
+	Storage  storageService.IUserStorage
 	Exporter exporterService.IRateExporter
 	Observer observerService.IObserverService
 }
