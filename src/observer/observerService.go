@@ -20,7 +20,7 @@ type ObserverService struct {
 	Strategy func(userGmail string, BTCPrice float64) error
 }
 
-func (obs *ObserverService) Notify(
+func (obs ObserverService) Notify(
 	exporter exporterService.IRateExporter,
 	storage GetAllAbleStorage,
 ) error {

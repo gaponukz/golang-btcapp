@@ -16,11 +16,11 @@ func main() {
 	settings := settingsExporter.Load()
 
 	routerService := Controller{
-		Exporter: &exporter.CoingeckoExporter{},
-		Storage: &storage.JsonFileUserStorage{
+		Exporter: exporter.CoingeckoExporter{},
+		Storage: storage.JsonFileUserStorage{
 			Filename: "users.json",
 		},
-		Observer: &observer.ObserverService{
+		Observer: observer.ObserverService{
 			Strategy: func(userGmail string, BTCPrice float64) error {
 				return observer.SendGmailLetterStrategy(
 					userGmail, BTCPrice, settings,
