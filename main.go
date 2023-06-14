@@ -12,17 +12,18 @@ import (
 )
 
 func main() {
+	settingsExporter := settings.DotEnvSettings{}
+	settings := settingsExporter.Load()
+
 	routerService := Controller{
 		Exporter: &exporter.CoingeckoExporter{},
 		Storage: &storage.JsonFileUserStorage{
 			Filename: "users.json",
 		},
 		Observer: &observer.ObserverService{
-			Strategy: func(userGmail string, BTCPrice float64, errors chan error) {
-				settingsExporter := settings.DotEnvSettings{}
-
-				observer.SendGmailLetterStrategy(
-					userGmail, BTCPrice, errors, settingsExporter.Load(),
+			Strategy: func(userGmail string, BTCPrice float64) error {
+				return observer.SendGmailLetterStrategy(
+					userGmail, BTCPrice, settings,
 				)
 			},
 		},

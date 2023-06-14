@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -36,7 +35,6 @@ func (controller Controller) SubscribeRouter(responseWriter http.ResponseWriter,
 
 	if userGmail == "" {
 		responseWriter.WriteHeader(http.StatusBadRequest)
-		responseWriter.Write([]byte(""))
 		return
 	}
 
@@ -49,7 +47,6 @@ func (controller Controller) SubscribeRouter(responseWriter http.ResponseWriter,
 
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
-		responseWriter.Write([]byte(""))
 		return
 	}
 
@@ -57,10 +54,11 @@ func (controller Controller) SubscribeRouter(responseWriter http.ResponseWriter,
 }
 
 func (controller Controller) SendEmailsRouter(responseWriter http.ResponseWriter, request *http.Request) {
-	errorsCount, usersCount := controller.Observer.Notify(
-		controller.Exporter,
-		controller.Storage,
-	)
+	err := controller.Observer.Notify(controller.Exporter, controller.Storage)
 
-	responseWriter.Write([]byte(fmt.Sprintf("Sended %d/%d", errorsCount, usersCount)))
+	if err != nil {
+		responseWriter.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	responseWriter.Write([]byte("Sended"))
 }

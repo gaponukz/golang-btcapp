@@ -9,12 +9,11 @@ import (
 func SendGmailLetterStrategy(
 	userGmail string,
 	BTCPrice float64,
-	errors chan error,
 	settings settings.Settings,
-) {
+) error {
 	message := fmt.Sprintf("To: %s\r\nSubject: BTC/UAH price\r\n\r\nBTC/UAH price: %f\r\n", userGmail, BTCPrice)
 
-	errors <- smtp.SendMail(
+	return smtp.SendMail(
 		"smtp.gmail.com:587",
 		smtp.PlainAuth(
 			"",
